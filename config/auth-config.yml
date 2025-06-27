@@ -1,0 +1,56 @@
+database:
+  host: dbmanager
+  port: 5432
+  
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+grpcAuthServer:
+  host: 0.0.0.0
+  port: 50052
+
+jwt:
+  secret_key: "your-super-secret-jwt-key-change-in-production"
+  expiration: "24h"
+
+verification:
+  secret_key: "your-super-secret-verification-key-change-in-production"
+  expiration: "24h"
+
+# gRPC сервер auth-сервиса
+grpc:
+  host: "0.0.0.0"
+  port: 50052
+
+# gRPC клиент для DBManager
+# (используется для подключения к сервису БД)
+dbmanager:
+  host: "dbmanager"
+  port: 50051
+
+# gRPC клиент для файлового сервиса
+# (используется для создания домашних директорий пользователей)
+file_service:
+  host: "file-service"
+  port: 50053
+
+logger:
+  level: "info"
+  development: true
+  encoding: "console"
+  outputPaths: ["stdout"]
+  errorOutputPaths: ["stderr"]
+  encoderConfig:
+    messageKey: "message"
+    levelKey: "level"
+    timeKey: "timestamp"
+    nameKey: "logger"
+    callerKey: "caller"
+    functionKey: "func"
+    stacktraceKey: "stacktrace"
+    lineEnding: "\n"
+    levelEncoder: "lowercase"
+    timeEncoder: "iso8601"
+    durationEncoder: "string"
+    callerEncoder: "short" 

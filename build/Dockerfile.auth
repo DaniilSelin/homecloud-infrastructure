@@ -1,0 +1,46 @@
+FROM golang:1.23-alpine AS builder
+
+# Установка необходимых пакетов
+RUN apk add --no-cache \
+    git \
+    protobuf-dev \
+    make
+
+# Установка protoc-gen-go и protoc-gen-go-grpc
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование go.mod и go.sum
+COPY services/auth/go.mod services/auth/go.sum ./
+
+# Загрузка зависимостей
+RUN go mod download
+
+# Копирование исходного кода
+COPY services/auth/ .
+
+# Генерация gRPC кода с помощью Makefile
+RUN cd internal/transport/grpc && make gen-all
+
+# Сборка приложения
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auth-service cmd/server/main.go
+
+# Финальный образ
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Копирование бинарного файла
+COPY --from=builder /app/auth-service .
+
+# Копирование конфигурации
+COPY config/auth-config.yml ./config/config.local.yaml
+
+# Открытие портов
+EXPOSE 8080 50052
+
+# Запуск приложения
+CMD ["./auth-service"] 

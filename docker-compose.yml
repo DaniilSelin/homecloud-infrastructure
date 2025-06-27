@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # PostgreSQL база данных
+  postgres:
+    image: postgres:15-alpine
+    container_name: homecloud-postgres
+    environment:
+      POSTGRES_DB: homecloud
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - homecloud-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # DB Manager Service
+  dbmanager:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: build/Dockerfile.dbmanager
+    container_name: homecloud-dbmanager
+    ports:
+      - "50051:50051"
+    restart: unless-stopped
+    networks:
+      - homecloud-network
+    environment:
+      DB_NAME: homecloud
+      DB_USER: postgres
+      DB_PASSWORD: changeme
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+  auth:
+    depends_on:
+      - dbmanager
+    build:
+      context: .
+      dockerfile: build/Dockerfile.auth
+    container_name: homecloud-auth
+    ports:
+      - "8080:8080"
+      - "50052:50052"
+    networks:
+      - homecloud-network
+
+  file-service:
+    depends_on:
+      - dbmanager
+      - auth
+    build:
+      context: .
+      dockerfile: build/Dockerfile.file-service
+    container_name: homecloud-file-service
+    ports:
+      - "8082:8082"
+      - "50053:50053"
+    volumes:
+      - ./storage:/app/storage
+      - file_temp:/app/temp
+    networks:
+      - homecloud-network
+
+  frontend:
+    depends_on:
+      - auth
+      - file-service
+    build:
+      context: .
+      dockerfile: build/Dockerfile.frontend
+    container_name: homecloud-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - homecloud-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  file_storage:
+  file_temp:
+
+networks:
+  homecloud-network:
+    driver: bridge 

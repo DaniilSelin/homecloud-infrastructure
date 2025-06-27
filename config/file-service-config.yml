@@ -1,0 +1,36 @@
+server:
+  host: "0.0.0.0"
+  port: 8082
+
+database:
+  host: "postgres"
+  port: 5432
+  user: "postgres"
+  password: "changeme"
+  dbname: "homecloud"
+  sslmode: "disable"
+
+storage:
+  base_path: "./storage"
+  max_size: 1073741824
+  chunk_size: 1048576
+  temp_path: "./temp"
+  user_dir_name: "users"
+
+logger:
+  level: "debug"
+  encoding: "console"
+  output_paths: ["stdout"]
+  error_output_paths: ["stderr"]
+
+auth:
+  host: "auth"
+  port: 50052
+
+dbmanager:
+  host: "dbmanager"
+  port: 50051
+
+grpc:
+  host: "0.0.0.0"
+  port: 50053 

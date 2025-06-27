@@ -1,0 +1,55 @@
+# Конфигурация репозиториев HomeCloud
+repositories:
+  dbmanager:
+    url: "https://github.com/DaniilSelin/homecloud--dbmanager-service.git"
+    branch: "main"
+    path: "./services/dbmanager"
+    service_name: "dbmanager"
+    
+  auth:
+    url: "https://github.com/DaniilSelin/homecloud-auth-service.git"
+    branch: "main"
+    path: "./services/auth"
+    service_name: "auth"
+    
+  file_service:
+    url: "https://github.com/DaniilSelin/homecloud-file-service.git"
+    branch: "main"
+    path: "./services/file-service"
+    
+  frontend:
+    url: "https://github.com/DaniilSelin/homecloud-frontend.git"
+    branch: "master"
+    path: "./services/frontend"
+
+# Настройки базы данных
+database:
+  host: "postgres"
+  port: 5432
+  user: "postgres"
+  password: "password"
+  homecloud_db: "homecloud_db"
+
+# Настройки сервисов
+services:
+  dbmanager:
+    grpc_port: 50051
+    http_port: 50051
+    
+  auth:
+    http_port: 8080
+    grpc_port: 50052
+    
+  file_service:
+    http_port: 8081
+    grpc_port: 50053
+    
+  frontend:
+    http_port: 3000
+
+# Настройки JWT
+jwt:
+  secret_key: "your-super-secret-jwt-key-change-in-production"
+  expiration: "24h"
+  verification_secret_key: "your-super-secret-verification-key-change-in-production"
+  verification_expiration: "24h" 
