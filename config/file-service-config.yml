@@ -11,17 +11,31 @@ database:
   sslmode: "disable"
 
 storage:
-  base_path: "./storage"
+  base_path: "/app/storage"
   max_size: 1073741824
   chunk_size: 1048576
-  temp_path: "./temp"
+  temp_path: "/app/temp"
   user_dir_name: "users"
 
 logger:
-  level: "debug"
+  level: "info"
+  development: true
   encoding: "console"
-  output_paths: ["stdout"]
-  error_output_paths: ["stderr"]
+  outputPaths: ["stdout"]
+  errorOutputPaths: ["stderr"]
+  encoderConfig:
+    messageKey: "message"
+    levelKey: "level"
+    timeKey: "timestamp"
+    nameKey: "logger"
+    callerKey: "caller"
+    functionKey: "func"
+    stacktraceKey: "stacktrace"
+    lineEnding: "\n"
+    levelEncoder: "lowercase"
+    timeEncoder: "iso8601"
+    durationEncoder: "string"
+    callerEncoder: "short" 
 
 auth:
   host: "auth"

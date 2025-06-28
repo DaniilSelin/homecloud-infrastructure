@@ -1,0 +1,20 @@
+{
+  "user": {
+    "id": "dae59d34-fa06-496d-881c-82245e92f5cc",
+    "email": "debug@example.com",
+    "username": "debuguser",
+    "password": "debugpass123",
+    "role": "user"
+  },
+  "auth": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTExODI4MzEsImlhdCI6MTc1MTA5NjQzMSwidG9rZW5faWQiOiI2NjlhN2Y0MWNlZGUzNmQ4IiwidXNlcl9pZCI6ImRhZTU5ZDM0LWZhMDYtNDk2ZC04ODFjLTgyMjQ1ZTkyZjVjYyJ9.gB6UIWN5N9czD7rvHIw6yJLnUHWRkF2WTbav4k7Vz8A",
+    "token_id": "669a7f41cedd36d8",
+    "expires_at": "2025-06-28T07:40:21.949330882Z"
+  },
+  "services": {
+    "auth_url": "http://localhost:8080/api/v1/auth",
+    "file_service_url": "http://localhost:8082/api/v1",
+    "dbmanager_url": "localhost:50051"
+  },
+  "description": "Тестовый пользователь для отладки File Service проблем с получением данных из БД - ОБНОВЛЁН"
+} 
